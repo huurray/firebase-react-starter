@@ -6,56 +6,41 @@ import { bindActionCreators } from 'redux';
 
 import * as userActions from '../../redux/modules/user';
 
-import AuthScreen from './AuthScreen';
-
 interface Props {
   userActions: any;
-  userData: any;
-}
-interface State {
-  isSignedIn: boolean;
 }
 
 function withAuth(Component: React.ComponentClass<any>) {
-  class ComponentWithHOC extends React.Component<Props, State> {
-    constructor(props) {
-      super(props);
-      this.state = {
-        isSignedIn: false
-      };
-    }
-
+  class ComponentWithHOC extends React.Component<Props> {
     componentDidMount() {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          this.setState({ isSignedIn: !!user });
+          this.props.userActions.getUser({
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL
+          });
+
+          //이후 서버에서 GET하는 추가적인 유저 정보 입력 to redux store
         }
       });
     }
 
     render() {
-      console.log(this.props.userData);
       return (
         <React.Fragment>
-          {this.state.isSignedIn ? (
-            <Component {...this.props} />
-          ) : (
-            <AuthScreen userActions={this.props.userActions} />
-          )}
+          <Component {...this.props} />
         </React.Fragment>
       );
     }
   }
 
-  const mapStateToProps = state => ({
-    userData: state.user.data
-  });
   const mapDispatchToProps = (dispatch: any) => ({
     userActions: bindActionCreators(userActions, dispatch)
   });
 
   return connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
   )(ComponentWithHOC);
 }

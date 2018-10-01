@@ -4,6 +4,7 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 interface Props {
   userActions: any;
+  history: any;
 }
 
 export default class extends React.PureComponent<Props> {
@@ -19,15 +20,16 @@ export default class extends React.PureComponent<Props> {
         firebase.auth.FacebookAuthProvider.PROVIDER_ID
       ],
       callbacks: {
-        signInSuccessWithAuthResult: data =>
+        signInSuccessWithAuthResult: data => {
           this.props.userActions.getUser({
             displayName: data.user.displayName,
             email: data.user.email,
             photoURL: data.user.photoURL
-          })
+          });
+          this.props.history.replace('/');
+        }
       }
     };
-
     return (
       <div>
         <StyledFirebaseAuth
