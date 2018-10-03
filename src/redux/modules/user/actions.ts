@@ -9,7 +9,7 @@ export const logOutUserAction = () => ({
   type: 'USER_LOGOUT'
 });
 
-/////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 export function getUser(user) {
   return async dispatch => {
     try {

@@ -1,5 +1,5 @@
-const PRIMARY = '#f6d155';
-const SECONDARY = '#FE7D7C';
+const PRIMARY = '#FE7D7C';
+const SECONDARY = '#f6f155';
 const TERTIARY = '#2D8ABE';
 
 const GREY_LIGHT_1 = '#F7F7F7';
